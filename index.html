@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The History of Venture Capital</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#06090f;--navy2:#0b1020;--navy3:#111828;
+  --gold:#c8a44a;--gold2:#e8c97a;--gold3:#f5dfa0;
+  --cream:#f0e8d4;--muted:#7a8599;--white:#f8f5ee;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--navy);color:var(--cream);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
+
+/* CURSOR */
+.cursor-glow{position:fixed;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(200,164,74,0.055) 0%,transparent 70%);pointer-events:none;z-index:1;transform:translate(-50%,-50%);transition:left 0.12s ease,top 0.12s ease;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.2rem 4rem;display:flex;justify-content:space-between;align-items:center;transition:background 0.4s;}
+nav.scrolled{background:rgba(6,9,15,0.93);backdrop-filter:blur(16px);border-bottom:1px solid rgba(200,164,74,0.1);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;}
+.nav-links{display:flex;gap:2.2rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;transition:color 0.3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{transform:scaleX(1);}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:9rem 10% 7rem;overflow:hidden;}
+.hero-img{position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1800&q=80&fit=crop&crop=entropy') center/cover no-repeat;
+  filter:brightness(0.17) saturate(0.5);transform:scale(1.08);animation:heroZoom 20s ease-in-out infinite alternate;}
+@keyframes heroZoom{from{transform:scale(1.08);}to{transform:scale(1.14);}}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,9,15,0.97) 40%,rgba(6,9,15,0.5) 100%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,164,74,0.033) 1px,transparent 1px),linear-gradient(90deg,rgba(200,164,74,0.033) 1px,transparent 1px);background-size:80px 80px;animation:gridDrift 28s linear infinite;}
+@keyframes gridDrift{from{background-position:0 0;}to{background-position:80px 80px;}}
+.hero-orb{position:absolute;right:-180px;top:50%;transform:translateY(-50%);width:750px;height:750px;border-radius:50%;background:radial-gradient(circle,rgba(58,111,216,0.1),rgba(200,164,74,0.05) 50%,transparent 70%);animation:orbPulse 11s ease-in-out infinite;}
+@keyframes orbPulse{0%,100%{transform:translateY(-50%) scale(1);opacity:0.6;}50%{transform:translateY(-50%) scale(1.07);opacity:1;}}
+.hero-content{position:relative;z-index:2;}
+.hero-eyebrow{display:flex;align-items:center;gap:1rem;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;opacity:0;animation:slideRight 0.9s cubic-bezier(0.16,1,0.3,1) forwards 0.3s;}
+.hero-eyebrow-line{width:40px;height:1px;background:var(--gold);}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;line-height:0.97;color:var(--white);max-width:860px;opacity:0;animation:slideUp 1s cubic-bezier(0.16,1,0.3,1) forwards 0.5s;}
+.hero h1 .line{display:block;}
+.hero h1 em{font-style:italic;color:var(--gold2);}
+.hero h1 strong{font-weight:600;}
+.hero-desc{margin-top:2.5rem;max-width:560px;font-size:1.05rem;color:var(--muted);line-height:1.85;opacity:0;animation:slideUp 1s cubic-bezier(0.16,1,0.3,1) forwards 0.75s;}
+.hero-desc em{color:var(--cream);font-style:normal;}
+.hero-ctas{display:flex;gap:1.2rem;margin-top:3rem;opacity:0;animation:slideUp 1s cubic-bezier(0.16,1,0.3,1) forwards 1s;}
+.btn-primary{padding:0.85rem 2.2rem;background:var(--gold);color:var(--navy);font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-weight:500;transition:background 0.3s,transform 0.2s;}
+.btn-primary:hover{background:var(--gold3);transform:translateY(-2px);}
+.btn-ghost{padding:0.85rem 2.2rem;border:1px solid rgba(200,164,74,0.4);color:var(--gold);font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:border-color 0.3s,background 0.3s;}
+.btn-ghost:hover{border-color:var(--gold);background:rgba(200,164,74,0.07);}
+.hero-scroll{position:absolute;bottom:2.5rem;right:4rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;color:var(--muted);font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0;animation:fadeIn 1s ease forwards 1.4s;writing-mode:vertical-rl;}
+.hero-scroll-line{width:1px;height:55px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:scrollFlow 2.2s ease-in-out infinite;}
+@keyframes scrollFlow{0%{opacity:0;transform:scaleY(0.3);}50%{opacity:1;transform:scaleY(1);}100%{opacity:0;transform:scaleY(0.3);}}
+
+/* COUNTER BAR */
+.counter-bar{background:var(--gold);padding:3.5rem 10%;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+.counter-item{text-align:center;}
+.counter-num{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:600;color:var(--navy);line-height:1;display:block;}
+.counter-label{font-size:0.73rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(6,9,15,0.6);margin-top:0.3rem;}
+
+/* SECTIONS */
+section{position:relative;z-index:2;padding:8rem 10%;}
+.section-tag{font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.7rem;}
+.section-tag::before{content:'';width:30px;height:1px;background:var(--gold);}
+.section-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4.2rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:1rem;}
+.section-h em{font-style:italic;color:var(--gold2);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(36px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+
+/* INTRO */
+.intro{background:var(--navy2);}
+.intro-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;margin-top:4rem;}
+.intro-body p{color:var(--muted);font-size:0.97rem;margin-bottom:1.4rem;line-height:1.85;}
+.intro-body p:first-child{color:var(--cream);font-size:1.08rem;}
+.intro-body p strong{color:var(--cream);font-weight:500;}
+.callout{background:rgba(200,164,74,0.07);border-left:3px solid var(--gold);padding:1.2rem 1.5rem;margin:1.5rem 0;border-radius:0 4px 4px 0;}
+.callout p{color:var(--cream) !important;font-size:0.95rem !important;margin:0 !important;}
+.intro-img-wrap{position:relative;margin-bottom:2rem;overflow:hidden;height:280px;}
+.intro-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.8);transition:transform 0.7s ease,filter 0.4s;}
+.intro-img-wrap:hover img{transform:scale(1.04);filter:brightness(0.85) saturate(1);}
+.intro-img-label{position:absolute;bottom:0;left:0;right:0;padding:0.8rem 1.2rem;background:linear-gradient(to top,rgba(6,9,15,0.9),transparent);font-size:0.72rem;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;}
+.stat-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.stat-card{background:var(--navy3);border:1px solid rgba(200,164,74,0.15);border-top:2px solid var(--gold);padding:1.5rem;transition:border-color 0.3s,transform 0.3s;}
+.stat-card:hover{border-color:rgba(200,164,74,0.4);transform:translateY(-3px);}
+.stat-card .num{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:600;color:var(--gold2);line-height:1;}
+.stat-card .lbl{font-size:0.74rem;color:var(--muted);margin-top:0.3rem;}
+
+/* PARALLAX */
+.parallax-banner{position:relative;height:55vh;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.parallax-img{position:absolute;inset:-20%;background-size:cover;background-position:center;will-change:transform;}
+.parallax-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,9,15,0.85),rgba(6,9,15,0.58),rgba(6,9,15,0.85));}
+.parallax-content{position:relative;z-index:2;text-align:center;padding:0 8%;}
+.parallax-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.5vw,2.8rem);font-style:italic;font-weight:300;color:var(--cream);max-width:820px;line-height:1.4;}
+.parallax-attr{margin-top:1rem;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);}
+
+/* TIMELINE */
+.timeline-section{background:var(--navy3);}
+.timeline{position:relative;margin-top:5rem;}
+.tl-spine{position:absolute;left:180px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--gold) 5%,var(--gold) 95%,transparent);}
+.tl-item{display:grid;grid-template-columns:180px 1fr;padding-bottom:4.5rem;position:relative;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-year-col{text-align:right;padding-right:3rem;padding-top:0.3rem;}
+.tl-year{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--gold);line-height:1;}
+.tl-era{font-size:0.64rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:0.25rem;}
+.tl-dot{position:absolute;left:180px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--navy3);border:2px solid var(--gold);transform:translateX(-50%);box-shadow:0 0 0 4px rgba(200,164,74,0.1);transition:background 0.3s,box-shadow 0.3s;}
+.tl-item:hover .tl-dot{background:var(--gold);box-shadow:0 0 20px rgba(200,164,74,0.5);}
+.tl-body{padding-left:3rem;}
+.tl-img-wrap{width:100%;height:200px;overflow:hidden;margin-bottom:1.2rem;border:1px solid rgba(200,164,74,0.1);position:relative;}
+.tl-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(0.68) saturate(0.75);transition:transform 0.6s ease,filter 0.4s;}
+.tl-item:hover .tl-img-wrap img{transform:scale(1.06);filter:brightness(0.82) saturate(1);}
+.tl-img-cap{position:absolute;top:0.75rem;left:0.75rem;background:rgba(6,9,15,0.85);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.3rem 0.7rem;border:1px solid rgba(200,164,74,0.3);}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--white);line-height:1.2;margin-bottom:0.8rem;}
+.tl-text{font-size:0.9rem;color:var(--muted);line-height:1.85;max-width:650px;}
+.tl-text strong{color:var(--cream);font-weight:500;}
+.tl-chip{display:inline-block;margin-top:1rem;padding:0.3rem 0.9rem;border:1px solid rgba(200,164,74,0.3);font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);}
+
+/* FIGURES */
+.figures-section{background:var(--navy2);}
+.figures-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem;}
+.fig-card{background:var(--navy3);border:1px solid rgba(255,255,255,0.05);overflow:hidden;position:relative;transition:transform 0.4s ease,border-color 0.3s;}
+.fig-card:hover{transform:translateY(-7px);border-color:rgba(200,164,74,0.3);}
+.fig-img{height:220px;overflow:hidden;position:relative;}
+.fig-img img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:brightness(0.58) saturate(0.55) sepia(0.12);transition:transform 0.7s ease,filter 0.4s;}
+.fig-card:hover .fig-img img{transform:scale(1.07);filter:brightness(0.73) saturate(0.85);}
+.fig-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,var(--navy3) 0%,transparent 55%);}
+.fig-initials{position:absolute;top:1rem;right:1rem;width:44px;height:44px;border-radius:50%;background:rgba(200,164,74,0.15);border:1px solid rgba(200,164,74,0.4);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold2);}
+.fig-body{padding:1.5rem 1.6rem 2rem;}
+.fig-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--white);margin-bottom:0.2rem;}
+.fig-role{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.fig-text{font-size:0.83rem;color:var(--muted);line-height:1.75;}
+.fig-text strong{color:var(--cream);font-weight:500;}
+.fig-stat{margin-top:1.2rem;padding-top:1rem;border-top:1px solid rgba(200,164,74,0.12);display:flex;align-items:baseline;gap:0.5rem;}
+.fig-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--gold2);}
+.fig-stat-label{font-size:0.72rem;color:var(--muted);}
+
+/* DEALS */
+.deals-section{}
+.deal-intro{max-width:700px;font-size:1rem;color:var(--muted);line-height:1.85;margin-top:1.5rem;margin-bottom:4rem;}
+.deal-intro strong{color:var(--cream);}
+.deals-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.deal{background:var(--navy3);border:1px solid rgba(255,255,255,0.05);overflow:hidden;transition:border-color 0.3s,transform 0.3s;}
+.deal:hover{border-color:rgba(200,164,74,0.3);transform:translateY(-4px);}
+.deal-img{height:170px;overflow:hidden;position:relative;}
+.deal-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.48) saturate(0.55);transition:transform 0.6s ease,filter 0.4s;}
+.deal:hover .deal-img img{transform:scale(1.06);filter:brightness(0.62) saturate(0.8);}
+.deal-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,var(--navy3),transparent);}
+.deal-badge{position:absolute;top:1rem;left:1rem;background:var(--gold);color:var(--navy);font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;padding:0.2rem 0.7rem;line-height:1.3;}
+.deal-body{padding:1.4rem 1.6rem 1.8rem;}
+.deal-co{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--white);margin-bottom:0.2rem;}
+.deal-investor-tag{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+.deal-text{font-size:0.83rem;color:var(--muted);line-height:1.75;}
+.deal-text strong{color:var(--cream);font-weight:500;}
+
+/* MODERN */
+.modern-section{background:var(--navy2);}
+.modern-layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:6rem;margin-top:4rem;align-items:start;}
+.modern-body p{font-size:0.97rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.85;}
+.modern-body p:first-child{font-size:1.05rem;color:var(--cream);}
+.modern-body p strong{color:var(--cream);font-weight:500;}
+.modern-img-wrap{margin-top:2.5rem;overflow:hidden;height:260px;border:1px solid rgba(200,164,74,0.1);}
+.modern-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(0.65) saturate(0.8);transition:transform 0.6s ease;}
+.modern-img-wrap:hover img{transform:scale(1.04);}
+.m-stat{padding:1.5rem 0;border-bottom:1px solid rgba(200,164,74,0.12);display:flex;flex-direction:column;gap:0.2rem;}
+.m-stat:first-child{border-top:1px solid rgba(200,164,74,0.12);}
+.m-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--gold2);line-height:1;}
+.m-lbl{font-size:0.8rem;color:var(--muted);}
+.m-bar{margin-top:0.6rem;height:2px;background:rgba(200,164,74,0.12);overflow:hidden;}
+.m-bar-fill{height:100%;background:var(--gold);width:0%;transition:width 1.4s cubic-bezier(0.16,1,0.3,1);}
+
+/* AI */
+.ai-section{background:var(--navy3);overflow:hidden;position:relative;}
+.ai-bg-glow{position:absolute;top:-200px;right:-200px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(58,111,216,0.1),transparent 70%);pointer-events:none;}
+.ai-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:4rem;}
+.ai-img-main{overflow:hidden;height:420px;border:1px solid rgba(200,164,74,0.1);}
+.ai-img-main img{width:100%;height:100%;object-fit:cover;filter:brightness(0.65) saturate(0.7) hue-rotate(10deg);transition:transform 0.7s ease;}
+.ai-img-main:hover img{transform:scale(1.04);}
+.ai-body p{font-size:0.97rem;color:var(--muted);margin-bottom:1.3rem;line-height:1.85;}
+.ai-body p:first-child{font-size:1.05rem;color:var(--cream);}
+.ai-body p strong{color:var(--cream);font-weight:500;}
+.ai-companies{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:2rem;}
+.ai-co-tag{padding:0.4rem 1rem;border:1px solid rgba(200,164,74,0.25);font-size:0.75rem;letter-spacing:0.08em;color:var(--gold);transition:background 0.3s,border-color 0.3s;}
+.ai-co-tag:hover{background:rgba(200,164,74,0.1);border-color:var(--gold);}
+
+/* GLOSSARY */
+.glossary-section{background:var(--navy2);}
+.glossary-intro{max-width:620px;font-size:0.97rem;color:var(--muted);margin-top:1rem;margin-bottom:3rem;line-height:1.8;}
+.gloss-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+.gloss{padding:1.4rem 1.8rem;border-left:2px solid rgba(200,164,74,0.25);background:rgba(200,164,74,0.025);transition:border-color 0.3s,background 0.3s;}
+.gloss:hover{border-color:var(--gold);background:rgba(200,164,74,0.06);}
+.gloss-term{font-size:0.88rem;font-weight:500;color:var(--gold2);margin-bottom:0.5rem;letter-spacing:0.03em;}
+.gloss-def{font-size:0.82rem;color:var(--muted);line-height:1.7;}
+
+/* FOOTER */
+footer{background:var(--navy);padding:5rem 10% 3rem;border-top:1px solid rgba(200,164,74,0.1);text-align:center;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold);margin-bottom:0.8rem;}
+.footer-tagline{font-size:0.8rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:2.5rem;}
+.footer-links{display:flex;justify-content:center;gap:2.5rem;list-style:none;margin-bottom:3rem;}
+.footer-links a{font-size:0.73rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:0.72rem;color:rgba(122,133,153,0.4);}
+
+/* KEYFRAMES */
+@keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:translateX(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  nav{padding:1rem 1.5rem;}.nav-links{display:none;}
+  section{padding:5rem 6%;}
+  .intro-layout,.modern-layout,.ai-layout{grid-template-columns:1fr;gap:3rem;}
+  .figures-grid{grid-template-columns:1fr;}
+  .deals-grid{grid-template-columns:1fr;}
+  .gloss-grid{grid-template-columns:1fr;}
+  .counter-bar{grid-template-columns:repeat(2,1fr);}
+  .tl-spine,.tl-dot{display:none;}
+  .tl-item{grid-template-columns:1fr;padding-bottom:3.5rem;}
+  .tl-year-col{text-align:left;padding-right:0;padding-bottom:0.7rem;}
+  .tl-body{padding-left:0;}
+  .stat-cards{grid-template-columns:1fr;}
+  .hero{padding:7rem 6% 5rem;}
+}
+</style>
+</head>
+<body>
+<div class="cursor-glow" id="cursor"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">VC Guidebook</div>
+  <ul class="nav-links">
+    <li><a href="#intro">Origins</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#figures">Figures</a></li>
+    <li><a href="#deals">Deals</a></li>
+    <li><a href="#modern">Modern Era</a></li>
+    <li><a href="#ai">AI Age</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow"><span class="hero-eyebrow-line"></span>A Visual Guidebook</p>
+    <h1>
+      <span class="line">The History</span>
+      <span class="line">of <em>Venture</em></span>
+      <span class="line"><strong>Capital</strong></span>
+    </h1>
+    <p class="hero-desc">
+      Imagine handing someone a million dollars for an idea that might fail — <em>and calling that a good decision.</em> That is venture capital. This is the story of how that gamble built the modern world.
+    </p>
+    <div class="hero-ctas">
+      <a href="#intro" class="btn-primary">Begin Reading</a>
+      <a href="#timeline" class="btn-ghost">Jump to Timeline</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
+</header>
+
+<!-- COUNTER BAR -->
+<div class="counter-bar">
+  <div class="counter-item"><span class="counter-num">1946</span><div class="counter-label">The year it all began</div></div>
+  <div class="counter-item"><span class="counter-num">$285B</span><div class="counter-label">Invested globally in 2023</div></div>
+  <div class="counter-item"><span class="counter-num">1,200+</span><div class="counter-label">Billion-dollar startups today</div></div>
+  <div class="counter-item"><span class="counter-num">675×</span><div class="counter-label">Google returned to its investors</div></div>
+</div>
+
+<!-- ── CHAPTER 1: INTRO ── -->
+<section id="intro" class="intro">
+  <div class="section-tag">Chapter 1 · The Big Idea</div>
+  <h2 class="section-h reveal">What is <em>Venture Capital?</em></h2>
+  <div class="intro-layout">
+    <div class="intro-body reveal">
+      <p>Think of it like this. A young person has a big idea — maybe an app, a new medicine, or a smarter device. To build it, they need money. But banks won't lend to someone with no product, no customers, and no guarantee of success. So where do they turn?</p>
+      <p>That's where a <strong>venture capitalist (VC)</strong> steps in. A VC gives money to the founder — not as a loan, but in exchange for a small ownership stake in the company. If the company grows and becomes worth a lot, that small slice becomes very valuable. If the company fails, the VC loses their investment.</p>
+      <div class="callout"><p>💡 <strong>Simple version:</strong> VCs are like talent scouts who bet on people with big ideas, hoping one of those ideas changes the world — and makes them a fortune in the process.</p></div>
+      <p>Most startups fail. That's just the reality. Out of ten companies a VC invests in, maybe six or seven will disappear. Two or three will survive but stay small. And if they're lucky — <strong>one will become enormous.</strong></p>
+      <p>That one winner is why VCs do it. Because when a startup truly takes off, the returns aren't just good. They're staggering. A $10 million investment in Google in 1999 became worth billions by 2004. That kind of return changes everything — for the VC, for the founders, and sometimes for the whole world.</p>
+      <p>This is called the <strong>"power law"</strong> — the idea that in venture capital, one great bet can outweigh dozens of losses. It means the job isn't to avoid failure. It's to find the next company that will matter to everyone on earth.</p>
+    </div>
+    <div class="reveal-right">
+      <div class="intro-img-wrap">
+        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&q=80&fit=crop&crop=center" alt="Business handshake representing investment"/>
+        <div class="intro-img-label">A bet on people, not just ideas</div>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-card reveal"><div class="num">~90%</div><div class="lbl">of startups never make back what investors put in</div></div>
+        <div class="stat-card reveal"><div class="num">10×</div><div class="lbl">Minimum return the best VC funds aim for</div></div>
+        <div class="stat-card reveal"><div class="num">$70K</div><div class="lbl">The first serious VC bet ever made — in 1957</div></div>
+        <div class="stat-card reveal"><div class="num">2%</div><div class="lbl">of deals create over 90% of all VC profits</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARALLAX 1 -->
+<div class="parallax-banner">
+  <div class="parallax-img" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80&fit=crop&crop=bottom')" id="para1"></div>
+  <div class="parallax-overlay"></div>
+  <div class="parallax-content">
+    <p class="parallax-quote reveal">"The best venture investments never feel safe at the time. If they felt safe, everyone would have already made them."</p>
+    <p class="parallax-attr reveal">— A truth that has held since 1946</p>
+  </div>
+</div>
+
+<!-- ── CHAPTER 2: TIMELINE ── -->
+<section id="timeline" class="timeline-section">
+  <div class="section-tag">Chapter 2 · How It All Happened</div>
+  <h2 class="section-h reveal">The <em>Timeline</em> of Venture Capital</h2>
+  <div class="timeline">
+    <div class="tl-spine"></div>
+
+    <!-- 1946 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">1946</div><div class="tl-era">The Beginning</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1543872084-c7bd3822856f?w=900&q=80&fit=crop&crop=center" alt="Historic stone building"/>
+          <div class="tl-img-cap">Boston · Post-World War II</div>
+        </div>
+        <div class="tl-title">The World's First Venture Capital Firm Opens Its Doors</div>
+        <div class="tl-text">World War II had just ended. Thousands of engineers and scientists — trained by the military — came home with brilliant ideas but no way to fund them. Banks wanted safe bets. The government wasn't interested in peacetime technology. Nobody was helping.<br><br>A French-born Harvard professor named <strong>Georges Doriot</strong> saw an opportunity. He started American Research and Development (ARDC) — the world's first institution that would give money to risky new companies in exchange for partial ownership. His whole philosophy was simple: <strong>back the person, not just the plan.</strong> "I don't invest in businesses," he said. "I invest in people."<br><br>It was a completely new idea. And it would eventually change the world.</div>
+        <span class="tl-chip">Boston, Massachusetts</span>
+      </div>
+    </div>
+
+    <!-- 1957 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">1957</div><div class="tl-era">First Big Win</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80&fit=crop&crop=center" alt="Electronic circuit board close-up"/>
+          <div class="tl-img-cap">The dawn of personal computing</div>
+        </div>
+        <div class="tl-title">A $70,000 Bet Returns $35 Million</div>
+        <div class="tl-text">Two engineers from MIT had an idea: build a computer small enough to fit in a room — not an entire building. At the time, computers were the size of houses and cost millions. The idea of a "minicomputer" seemed laughable to most people.<br><br>Doriot's ARDC didn't laugh. They invested <strong>$70,000</strong> — about what a nice house costs today — into the engineers' startup: Digital Equipment Corporation (DEC).<br><br>Nine years later, when DEC went public on the stock market, that $70,000 was worth <strong>over $35 million.</strong> A 500× return. This single investment proved that the venture model worked — and inspired dozens of new firms to try it themselves, mostly in a sunny valley south of San Francisco.</div>
+        <span class="tl-chip">500× Return</span>
+      </div>
+    </div>
+
+    <!-- 1959 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">1959</div><div class="tl-era">A New Address</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1541943181603-d8fe267a5dcf?w=900&q=80&fit=crop&crop=center" alt="California scenic hills and road"/>
+          <div class="tl-img-cap">Silicon Valley, California</div>
+        </div>
+        <div class="tl-title">Sand Hill Road: The World's Most Powerful Street</div>
+        <div class="tl-text">A short two-lane road in Menlo Park, California doesn't look important. It has no skyscrapers, no marble lobbies, no blinking screens. Just quiet office buildings and oak trees.<br><br>But in 1959, the first California venture firm moved in. Then another. Then another. Why? Because Stanford University was nearby — a factory for brilliant engineers. Those engineers started companies. Those companies needed investors. The investors clustered on <strong>Sand Hill Road.</strong><br><br>Over the next 60 years, more wealth per square foot would be created on this one street than almost anywhere else in human history. It became the unofficial headquarters of the global technology industry — not because of any single law or policy, but simply because the right people and the right money found each other in the right place.</div>
+        <span class="tl-chip">Silicon Valley</span>
+      </div>
+    </div>
+
+    <!-- 1972 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">1972</div><div class="tl-era">The Blueprint</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=900&q=80&fit=crop&crop=center" alt="Team around a table working together"/>
+          <div class="tl-img-cap">Building the modern venture playbook</div>
+        </div>
+        <div class="tl-title">Two Legendary Firms Born in the Same Year</div>
+        <div class="tl-text">In 1972, two firms opened on Sand Hill Road that would shape the next fifty years of technology — and venture capital.<br><br><strong>Sequoia Capital</strong>, founded by Don Valentine (a former chip salesman who understood technology deeply), would back Apple, Cisco, YouTube, Instagram, and Google. <strong>Kleiner Perkins</strong>, founded by two engineers who'd already built companies themselves, would back Amazon, Genentech, Netscape, and Google.<br><br>Together, these two firms wrote what became the universal playbook for venture investing: find founders with big ambitions in large markets, help them build fast, and never be scared of an idea that sounds crazy. Every serious VC firm that exists today learned from what Valentine, Perkins, and Kleiner built.</div>
+        <span class="tl-chip">The Defining Year</span>
+      </div>
+    </div>
+
+    <!-- 1980 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">1980</div><div class="tl-era">Science Gets Funded</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=900&q=80&fit=crop&crop=center" alt="Scientific laboratory with equipment"/>
+          <div class="tl-img-cap">The birth of biotech investment</div>
+        </div>
+        <div class="tl-title">Venture Capital Discovers It Can Fund Medicine Too</div>
+        <div class="tl-text">Until 1980, most venture capital went into computers and electronics. Then a company called Genentech — which used new techniques to engineer living cells and create medicines — went public on the stock market. Its share price nearly tripled on the very first day of trading.<br><br>Kleiner Perkins had funded it from the beginning. The message was unmistakable: <strong>venture capital wasn't just for tech. It could fund science itself.</strong><br><br>Today, the medicines that treat cancer, diabetes, and rare genetic diseases were often born from venture-backed biotech companies. The line between Silicon Valley and a research hospital has been blurring ever since that October morning in 1980.</div>
+        <span class="tl-chip">Biotech Is Born</span>
+      </div>
+    </div>
+
+    <!-- 1994-2000 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">1994–2000</div><div class="tl-era">The Internet Boom</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=900&q=80&fit=crop&crop=center" alt="Hands typing on a laptop keyboard"/>
+          <div class="tl-img-cap">The commercial internet changes everything</div>
+        </div>
+        <div class="tl-title">The Dot-Com Era: Too Much Money, Then a Crash, Then the Survivors</div>
+        <div class="tl-text">When the internet became available to ordinary people in the mid-1990s, everyone could see it was going to be enormous. The problem? <strong>Nobody knew which companies would win.</strong><br><br>Venture money poured into internet startups at a staggering pace. Companies with no revenue and no clear plan raised millions. The stock market went wild. Then, in March 2000, it all collapsed. Trillions of dollars of stock value disappeared. Thousands of internet companies closed.<br><br>But the companies that survived — <strong>Amazon, eBay, and a search engine startup called Google</strong> — went on to reshape how billions of people shop, communicate, and find information. The crash wasn't the end of the story. It was the filter that separated lasting ideas from empty hype.</div>
+        <span class="tl-chip">Boom &amp; Crash</span>
+      </div>
+    </div>
+
+    <!-- 1999 Google -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">1999</div><div class="tl-era">The Greatest Bet</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=900&q=80&fit=crop&crop=center" alt="Person typing on a laptop at a desk"/>
+          <div class="tl-img-cap">The year two rivals bet on two students</div>
+        </div>
+        <div class="tl-title">$25 Million into Google — The Most Famous VC Deal in History</div>
+        <div class="tl-text">In 1999, two Stanford PhD students were working on a better internet search engine. The problem? Everyone thought search was already solved. Yahoo had millions of users. AltaVista was popular. Why would anyone need yet another search engine?<br><br>Two investors disagreed — and unusually, two rival firms, <strong>Sequoia Capital and Kleiner Perkins, joined forces</strong> to invest $25 million together in the students' startup: Google.<br><br>When Google went public in 2004, those stakes were worth <strong>billions of dollars.</strong> It became one of the most studied investments in business history — not because it was lucky, but because the investors saw something real that everyone else had missed: Google's search was genuinely, measurably better than anything else.</div>
+        <span class="tl-chip">675× Return</span>
+      </div>
+    </div>
+
+    <!-- 2005 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">2005</div><div class="tl-era">Opening the Doors</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80&fit=crop&crop=center" alt="Group of people collaborating around a table"/>
+          <div class="tl-img-cap">Y Combinator's first batch of startups</div>
+        </div>
+        <div class="tl-title">Y Combinator: Anyone Can Build a Startup Now</div>
+        <div class="tl-text">For most of venture capital's history, getting funded depended heavily on <em>who you knew.</em> If you didn't have a warm introduction to a partner at Sequoia or Kleiner, your chances of getting a meeting were slim.<br><br><strong>Paul Graham</strong> changed that. In 2005, he started Y Combinator — a new kind of program that accepted any promising startup team, taught them everything about building a company over three months, and then introduced them to every investor in Silicon Valley at once, in a single event called "Demo Day."<br><br>The companies that came through YC are now household names: <strong>Airbnb, Stripe, Dropbox, DoorDash, Reddit, Twitch, and hundreds more.</strong> Y Combinator proved that great founders come from everywhere — not just Ivy League schools or existing Silicon Valley networks.</div>
+        <span class="tl-chip">A New Model</span>
+      </div>
+    </div>
+
+    <!-- 2009 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">2009</div><div class="tl-era">More Than Money</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=80&fit=crop&crop=center" alt="Modern open-plan office space"/>
+          <div class="tl-img-cap">The a16z model — a firm that does more</div>
+        </div>
+        <div class="tl-title">Andreessen Horowitz: VCs That Become Your Entire Support Team</div>
+        <div class="tl-text"><strong>Marc Andreessen</strong> — who co-invented the web browser at age 22 — had a bold opinion about why most VC firms weren't good enough: they just gave money and showed up to board meetings. Founders needed much more than that.<br><br>So when he and Ben Horowitz started their firm, <strong>Andreessen Horowitz (a16z)</strong>, they built something different. They hired specialists in recruiting (to help startups find great employees), marketing, law, regulatory affairs — an entire support system available to every company in their portfolio.<br><br>They also published ideas. Their essay "Software is Eating the World" — arguing that technology would transform every industry on earth — became one of the most widely read pieces of writing in the history of business. It turned out to be right.</div>
+        <span class="tl-chip">A New Playbook</span>
+      </div>
+    </div>
+
+    <!-- 2017 -->
+    <div class="tl-item reveal">
+      <div class="tl-year-col"><div class="tl-year">2017</div><div class="tl-era">Mega Scale</div></div>
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-img-wrap">
+          <img src="https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=900&q=80&fit=crop&crop=center" alt="City skyline at golden hour"/>
+          <div class="tl-img-cap">Global capital enters the game</div>
+        </div>
+        <div class="tl-title">SoftBank's $100 Billion Fund — Bigger Than Anyone Thought Possible</div>
+        <div class="tl-text">Traditional VC funds raised maybe $1–3 billion at a time. That was already enormous by most standards. Then Japan's SoftBank, led by Masayoshi Son, raised <strong>$100 billion</strong> — a fund larger than the entire US venture industry had invested in some entire years.<br><br>His theory was simple and controversial: <strong>give startups so much money that no competitor can keep up.</strong> Uber got billions. WeWork got billions. Dozens of companies got checks that dwarfed anything they'd ever imagined.<br><br>Some of it worked brilliantly. Some (especially WeWork) collapsed spectacularly. But the era it created was permanent: private companies worth tens of billions became normal. The word "unicorn" — once reserved for rare $1 billion companies — became everyday language.</div>
+        <span class="tl-chip">$100B Raised</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CHAPTER 3: FIGURES ── -->
+<section id="figures" class="figures-section">
+  <div class="section-tag">Chapter 3 · The People Behind It</div>
+  <h2 class="section-h reveal">Six People Who <em>Built</em> This Industry</h2>
+  <div class="figures-grid">
+
+    <div class="fig-card reveal">
+      <div class="fig-img">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&fit=crop&crop=top" alt="Portrait of a serious businessman"/>
+        <div class="fig-img-overlay"></div><div class="fig-initials">GD</div>
+      </div>
+      <div class="fig-body">
+        <div class="fig-name">Georges Doriot</div>
+        <div class="fig-role">The Father of Venture Capital</div>
+        <div class="fig-text">A French professor at Harvard who had served as a US Army General, Doriot invented the very concept of institutional venture capital. Before him, there was no playbook — he wrote it. His core belief: <strong>the person matters more than the plan.</strong> Plans change. Great people figure it out. He treated every investment as a long-term relationship, not a transaction. Modern VCs trace their philosophy directly back to him, even when they've never heard his name.</div>
+        <div class="fig-stat"><span class="fig-stat-num">500×</span><span class="fig-stat-label">returned on his DEC investment — the bet that started an industry</span></div>
+      </div>
+    </div>
+
+    <div class="fig-card reveal">
+      <div class="fig-img">
+        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80&fit=crop&crop=top" alt="Portrait of a confident man"/>
+        <div class="fig-img-overlay"></div><div class="fig-initials">DV</div>
+      </div>
+      <div class="fig-body">
+        <div class="fig-name">Don Valentine</div>
+        <div class="fig-role">Founder of Sequoia Capital</div>
+        <div class="fig-text">Valentine was a chip salesman before he was a VC, which meant he understood technology not as an abstraction but as something someone had to build and sell. His most famous question to any founder wasn't about their product — it was <strong>"How big is the market?"</strong> He didn't care about the best technology. He cared about the biggest opportunity. He backed Atari, Apple, and Cisco before most people had heard of any of them.</div>
+        <div class="fig-stat"><span class="fig-stat-num">Sequoia</span><span class="fig-stat-label">became the top-returning VC firm in history</span></div>
+      </div>
+    </div>
+
+    <div class="fig-card reveal">
+      <div class="fig-img">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80&fit=crop&crop=top" alt="Portrait of a thoughtful man"/>
+        <div class="fig-img-overlay"></div><div class="fig-initials">JD</div>
+      </div>
+      <div class="fig-body">
+        <div class="fig-name">John Doerr</div>
+        <div class="fig-role">Kleiner Perkins · Backed Google &amp; Amazon</div>
+        <div class="fig-text">Doerr came from Intel, where he'd seen great companies fail not from bad ideas, but from poor execution. He became obsessed with helping founders not just get money but <strong>actually achieve what they set out to do.</strong> He introduced a goal-setting system called OKRs — invented at Intel — to Google, Amazon, and hundreds of other companies. Today, OKRs are used by millions of businesses worldwide. And his investment in Google may be the single most profitable check ever written.</div>
+        <div class="fig-stat"><span class="fig-stat-num">OKRs</span><span class="fig-stat-label">goal system he spread from Intel to the entire world</span></div>
+      </div>
+    </div>
+
+    <div class="fig-card reveal">
+      <div class="fig-img">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80&fit=crop&crop=top" alt="Portrait of a mature professional man"/>
+        <div class="fig-img-overlay"></div><div class="fig-initials">MM</div>
+      </div>
+      <div class="fig-body">
+        <div class="fig-name">Michael Moritz</div>
+        <div class="fig-role">Sequoia Capital · The Storyteller Investor</div>
+        <div class="fig-text">Moritz was a journalist before he was an investor — a Time magazine reporter who covered early Silicon Valley. He understood narrative: why certain stories matter, why people believe in some visions and not others. That skill made him exceptional at evaluating founders. He backed Google when it had twelve employees, Yahoo when it was still called "Jerry's Guide to the World Wide Web," and PayPal before digital payments felt inevitable. <strong>He saw the story before anyone else did.</strong></div>
+        <div class="fig-stat"><span class="fig-stat-num">Yahoo, Google</span><span class="fig-stat-label">two of his most iconic early-stage calls</span></div>
+      </div>
+    </div>
+
+    <div class="fig-card reveal">
+      <div class="fig-img">
+        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80&fit=crop&crop=top" alt="Portrait of a man looking forward"/>
+        <div class="fig-img-overlay"></div><div class="fig-initials">PG</div>
+      </div>
+      <div class="fig-body">
+        <div class="fig-name">Paul Graham</div>
+        <div class="fig-role">Co-founder of Y Combinator</div>
+        <div class="fig-text">Graham is, above all, a writer and a teacher. His free essays on how to build startups — published online for anyone to read — became the most influential business writing of a generation. His startup school Y Combinator went further: it gave small checks and intensive coaching to any promising team, regardless of background or connections. <strong>He opened the door to people who had always been shut out.</strong> Airbnb was famously rejected by several investors before YC backed it. The rest is history.</div>
+        <div class="fig-stat"><span class="fig-stat-num">$600B+</span><span class="fig-stat-label">combined value of companies born from his program</span></div>
+      </div>
+    </div>
+
+    <div class="fig-card reveal">
+      <div class="fig-img">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80&fit=crop&crop=top" alt="Portrait of a confident business professional"/>
+        <div class="fig-img-overlay"></div><div class="fig-initials">MA</div>
+      </div>
+      <div class="fig-body">
+        <div class="fig-name">Marc Andreessen</div>
+        <div class="fig-role">Co-founder of Andreessen Horowitz (a16z)</div>
+        <div class="fig-text">At just 22, Andreessen co-built Netscape — the web browser that introduced most of the world to the internet. As a VC, he brought the same disruptive instinct. His essay "Software is Eating the World" argued that every industry — banking, healthcare, media, transportation — would eventually be transformed by software companies. He was right. His firm a16z grew into one of the most influential in the world, and his current focus is on <strong>artificial intelligence as the next great transformation.</strong></div>
+        <div class="fig-stat"><span class="fig-stat-num">$42B+</span><span class="fig-stat-label">assets under management across a16z's funds</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PARALLAX 2 -->
+<div class="parallax-banner">
+  <div class="parallax-img" style="background-image:url('https://images.unsplash.com/photo-1444210971048-545990748604?w=1800&q=80&fit=crop&crop=center')" id="para2"></div>
+  <div class="parallax-overlay"></div>
+  <div class="parallax-content">
+    <p class="parallax-quote reveal">"Every one of history's greatest venture deals looked like a bad idea when the check was written. That is not a coincidence."</p>
+    <p class="parallax-attr reveal">— The common thread across every landmark investment</p>
+  </div>
+</div>
+
+<!-- ── CHAPTER 4: DEALS ── -->
+<section id="deals">
+  <div class="section-tag">Chapter 4 · The Bets That Changed History</div>
+  <h2 class="section-h reveal"><em>Landmark</em> Investments</h2>
+  <p class="deal-intro reveal">Each of these investments was considered risky — or even ridiculous — at the time. The companies were too early, too strange, or operating in markets that <strong>didn't even exist yet.</strong> That's the point.</p>
+  <div class="deals-grid">
+
+    <div class="deal reveal">
+      <div class="deal-img">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=80&fit=crop&crop=center" alt="Close-up of a circuit board"/>
+        <div class="deal-img-overlay"></div><div class="deal-badge">500×</div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-co">Digital Equipment Corp</div>
+        <div class="deal-investor-tag">ARDC · 1957 · $70,000 invested</div>
+        <div class="deal-text">Two engineers wanted to build computers small enough to fit in a room instead of a building. ARDC wrote a $70,000 check. Nine years later, it was worth $35 million. <strong>This single investment proved the entire venture model could work</strong> — and convinced a generation of investors to try it themselves.</div>
+      </div>
+    </div>
+
+    <div class="deal reveal">
+      <div class="deal-img">
+        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=700&q=80&fit=crop&crop=center" alt="Person using a laptop at a bright workspace"/>
+        <div class="deal-img-overlay"></div><div class="deal-badge">675×</div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-co">Google</div>
+        <div class="deal-investor-tag">Sequoia &amp; Kleiner Perkins · 1999 · $25M</div>
+        <div class="deal-text">Two rival firms invested together in two students building "yet another search engine." The conventional wisdom was that search was already solved. <strong>The $25 million became billions</strong> when Google went public in 2004 — and Google's advertising system became the financial backbone of the entire internet.</div>
+      </div>
+    </div>
+
+    <div class="deal reveal">
+      <div class="deal-img">
+        <img src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=700&q=80&fit=crop&crop=center" alt="Hands holding a smartphone"/>
+        <div class="deal-img-overlay"></div><div class="deal-badge">700×</div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-co">Facebook</div>
+        <div class="deal-investor-tag">Accel Partners · 2005 · $12.7M</div>
+        <div class="deal-text">Accel invested in a social network for college students when everyone thought social networks had already peaked. A 20-year-old Harvard dropout was running it. <strong>$12.7 million became roughly $9 billion</strong> at Facebook's 2012 IPO — one of the greatest early-stage bets in venture history.</div>
+      </div>
+    </div>
+
+    <div class="deal reveal">
+      <div class="deal-img">
+        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=700&q=80&fit=crop&crop=center" alt="Car driving on a nighttime road"/>
+        <div class="deal-img-overlay"></div><div class="deal-badge">2,000×</div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-co">Uber</div>
+        <div class="deal-investor-tag">Benchmark · 2011 · $20M Series A</div>
+        <div class="deal-text">The pitch: use your smartphone to hail a car from a stranger. It sounded strange in 2011. Benchmark's team saw something different — an enormous market hiding in plain sight. They invested $20M for about 12% of the company. <strong>At peak valuation, that stake exceeded $7 billion</strong> — the largest dollar return ever from a single early-stage check.</div>
+      </div>
+    </div>
+
+    <div class="deal reveal">
+      <div class="deal-img">
+        <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=700&q=80&fit=crop&crop=center" alt="Bright cozy home interior living room"/>
+        <div class="deal-img-overlay"></div><div class="deal-badge">~300×</div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-co">Airbnb</div>
+        <div class="deal-investor-tag">Sequoia · 2009 · $600K seed</div>
+        <div class="deal-text">The founders were so broke they sold breakfast cereal boxes to survive. Their pitch — "let strangers sleep in your home" — got rejected by over 30 investors. Sequoia wrote a $600K check anyway. <strong>When Airbnb went public in 2020, it was worth over $100 billion.</strong> The cereal box story became Silicon Valley legend.</div>
+      </div>
+    </div>
+
+    <div class="deal reveal">
+      <div class="deal-img">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=700&q=80&fit=crop&crop=center" alt="Contactless payment tap at terminal"/>
+        <div class="deal-img-overlay"></div><div class="deal-badge">~200×</div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-co">Stripe</div>
+        <div class="deal-investor-tag">Sequoia · 2011 · ~$2M seed</div>
+        <div class="deal-text">Two Irish brothers had a simple but radical idea: make it so a website could accept payments in just seven lines of code. Every existing payment company required weeks of setup. Stripe did it in minutes. <strong>Now valued at $70 billion+</strong>, Stripe has become the invisible financial plumbing behind millions of businesses worldwide.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CHAPTER 5: MODERN ERA ── -->
+<section id="modern" class="modern-section">
+  <div class="section-tag">Chapter 5 · Where Things Stand Today</div>
+  <h2 class="section-h reveal">The <em>Modern</em> Landscape</h2>
+  <div class="modern-layout">
+    <div class="modern-body reveal-left">
+      <p>Venture capital today looks almost nothing like the small Boston office Georges Doriot opened in 1946. What was once a tiny, secretive industry — a few dozen partnerships on one street in California — has become a global institution reshaping every corner of the economy.</p>
+      <p>The money involved is staggering. In a single year (2021), the global venture industry invested over <strong>$620 billion.</strong> That's more than the GDP of most countries. The average "seed round" — the very first check a startup receives — is now larger than what many companies used to raise in total.</p>
+      <p><strong>The geography has spread everywhere.</strong> While Silicon Valley remains the symbolic center, booming startup ecosystems now exist in New York, London, Berlin, Bangalore, Tel Aviv, Singapore, and São Paulo. A founder in Lagos or Warsaw has more access to venture capital today than a founder in Palo Alto did in 1990.</p>
+      <p>New types of investors have appeared too. Huge corporations like Google, Salesforce, and Intel run their own venture arms. Sovereign wealth funds from Saudi Arabia and Singapore write billion-dollar checks into startups. University endowments bet heavily on VC funds. Even regular people can now invest in early-stage companies through crowdfunding platforms.</p>
+      <p>And yet, at the core, nothing has changed from what Doriot understood in 1946: <strong>somewhere out there, someone is building something that will matter to all of us.</strong> The job — the only job that has ever really mattered in this industry — is finding them before everyone else does.</p>
+      <div class="modern-img-wrap">
+        <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=900&q=80&fit=crop&crop=center" alt="Diverse team of professionals collaborating"/>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="m-stat"><div class="m-num">$285B</div><div class="m-lbl">Invested in startups globally in 2023</div><div class="m-bar"><div class="m-bar-fill" data-width="85"></div></div></div>
+      <div class="m-stat"><div class="m-num">1,200+</div><div class="m-lbl">Companies valued at $1 billion or more</div><div class="m-bar"><div class="m-bar-fill" data-width="70"></div></div></div>
+      <div class="m-stat"><div class="m-num">~$600B</div><div class="m-lbl">Value created by Y Combinator companies alone</div><div class="m-bar"><div class="m-bar-fill" data-width="90"></div></div></div>
+      <div class="m-stat"><div class="m-num">65+</div><div class="m-lbl">Countries with active startup ecosystems</div><div class="m-bar"><div class="m-bar-fill" data-width="60"></div></div></div>
+      <div class="m-stat"><div class="m-num">$7.2B</div><div class="m-lbl">a16z's dedicated AI fund, raised in 2023</div><div class="m-bar"><div class="m-bar-fill" data-width="50"></div></div></div>
+      <div class="m-stat"><div class="m-num">~40%</div><div class="m-lbl">of US economic output from VC-backed companies</div><div class="m-bar"><div class="m-bar-fill" data-width="40"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 6: AI ERA ── -->
+<section id="ai" class="ai-section">
+  <div class="ai-bg-glow"></div>
+  <div class="section-tag">Chapter 6 · What Comes Next</div>
+  <h2 class="section-h reveal">The <em>Age of AI</em></h2>
+  <div class="ai-layout">
+    <div class="ai-img-main reveal-left">
+      <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=900&q=80&fit=crop&crop=center" alt="Abstract glowing light pathways representing neural networks"/>
+    </div>
+    <div class="ai-body reveal-right">
+      <p>On November 30, 2022, a company called OpenAI released a chatbot called ChatGPT. Within a week, one million people were using it. Within two months, it had one hundred million users. No product in the history of the internet — not Facebook, not Instagram, not TikTok — had ever grown that fast.</p>
+      <p>The reaction inside the venture capital world was immediate. Every major firm redirected resources toward artificial intelligence. But this wasn't just excitement about a new app. <strong>Investors believed AI would transform every industry on earth</strong> — the way electricity did in the early 1900s, or the internet did in the 1990s.</p>
+      <p>There is, however, one big difference from previous technology waves: <strong>AI is incredibly expensive to build.</strong> Training the most powerful AI systems doesn't cost $70,000 like Doriot's DEC bet, or even $25 million like the Google check. It costs hundreds of millions — sometimes billions — of dollars just to get started.</p>
+      <p>This has changed the game. Only a handful of companies and investors can operate at this scale. And it has raised deep questions: Will AI concentrate power in the hands of a few enormous companies? Or will it — like the internet before it — eventually become a platform that lets millions of new startups flourish on top of it?</p>
+      <p>Nobody knows the answer yet. <strong>That uncertainty is exactly why venture capital exists.</strong> The next chapter of this story hasn't been written. But somewhere, the investors writing the next great check are already looking for the founder who will write it.</p>
+      <div class="ai-companies">
+        <span class="ai-co-tag">OpenAI</span><span class="ai-co-tag">Anthropic</span><span class="ai-co-tag">Mistral</span><span class="ai-co-tag">xAI</span><span class="ai-co-tag">Cohere</span><span class="ai-co-tag">Perplexity</span><span class="ai-co-tag">Scale AI</span><span class="ai-co-tag">Hugging Face</span><span class="ai-co-tag">Character.ai</span><span class="ai-co-tag">Stability AI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARALLAX 3 -->
+<div class="parallax-banner">
+  <div class="parallax-img" style="background-image:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1800&q=80&fit=crop&crop=center')" id="para3"></div>
+  <div class="parallax-overlay"></div>
+  <div class="parallax-content">
+    <p class="parallax-quote reveal">"The next company that changes the world is being built right now, by someone, somewhere — and there is a venture capitalist willing to bet everything to find them first."</p>
+    <p class="parallax-attr reveal">— The promise that has driven this industry since 1946</p>
+  </div>
+</div>
+
+<!-- ── GLOSSARY ── -->
+<section id="glossary" class="glossary-section">
+  <div class="section-tag">Quick Reference · Key Terms Explained Simply</div>
+  <h2 class="section-h reveal">The VC <em>Glossary</em></h2>
+  <p class="glossary-intro reveal">Venture capital has its own language. These are the words you'll encounter most often — explained in plain English, no finance degree required.</p>
+  <div class="gloss-grid">
+    <div class="gloss reveal"><div class="gloss-term">Power Law</div><div class="gloss-def">In a typical VC fund of 20 companies, one or two investments will generate almost all the profit — often 90% or more. This is the "power law." It means losing most bets is fine, as long as you win one big one. It's why VCs take risks that seem crazy to ordinary investors.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Equity</div><div class="gloss-def">Ownership in a company. When a VC invests, they receive equity — a percentage of the company. If the company becomes worth $1 billion and they own 10%, their stake is worth $100 million. This is different from a loan, where you'd just get your money back plus interest.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">LP / GP</div><div class="gloss-def"><strong>LPs (Limited Partners)</strong> are the people and institutions — pension funds, universities, wealthy families — that put money into a VC fund. <strong>GPs (General Partners)</strong> are the VCs themselves, who decide where to invest that money and receive a share of the profits in return.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Unicorn</div><div class="gloss-def">A private company valued at over $1 billion. The name comes from how rare such companies once were — as rare as a mythical unicorn. Today there are over 1,200 unicorns worldwide, but the name stuck. Companies valued at $10B+ are sometimes called "decacorns."</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Term Sheet</div><div class="gloss-def">The document that starts a deal. It outlines how much the VC will invest, what percentage of the company they'll receive, and rules about how decisions get made. It's not legally binding, but both sides take it very seriously.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Liquidation Preference</div><div class="gloss-def">A rule that says investors get paid back first if the company is sold. For example, if a VC invested $10M and the company sells for only $8M, the VC takes all $8M and the founders get nothing. This protects investors from losing money in smaller exits.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Carry (Carried Interest)</div><div class="gloss-def">The profit-sharing deal between GPs and LPs. Typically, VCs keep 20% of all profits after returning investors' money. This is how successful VCs get very wealthy. It's also one of the most debated tax provisions in American politics.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Down Round</div><div class="gloss-def">When a company raises new money at a lower value than its previous funding round — meaning the company is worth less than it was. This is painful: investors lose paper value, employees' stock options may become worthless, and morale suffers. But it doesn't always mean the company is doomed.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Cap Table</div><div class="gloss-def">Short for "capitalization table." It's a spreadsheet that lists every person and organization that owns a piece of a company, and exactly how much they own. Founders, investors, employees with stock options — everyone is on the cap table. Clean cap tables make future fundraising easier.</div></div>
+    <div class="gloss reveal"><div class="gloss-term">Dry Powder</div><div class="gloss-def">Money that a VC fund has collected from investors but hasn't invested yet. It sits ready, like dry gunpowder waiting to be fired. Having lots of dry powder gives a firm flexibility — they can move fast on great deals, or wait patiently for the right opportunity.</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">The History of Venture Capital</div>
+  <p class="footer-tagline">A Visual Guidebook · From ARDC in 1946 to the AI Age Today</p>
+  <ul class="footer-links">
+    <li><a href="#intro">Origins</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#figures">Figures</a></li>
+    <li><a href="#deals">Deals</a></li>
+    <li><a href="#modern">Modern Era</a></li>
+    <li><a href="#ai">AI Age</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ul>
+  <p class="footer-copy">For educational purposes · Images via Unsplash</p>
+</footer>
+
+<script>
+// Cursor glow
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+
+// Nav scroll style
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+
+// Scroll reveal
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const d = parseFloat(entry.target.dataset.delay || 0);
+      setTimeout(() => entry.target.classList.add('visible'), d * 110);
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.09 });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach((el, i) => {
+  el.dataset.delay = i % 6;
+  revealObs.observe(el);
+});
+
+// Animated stat bars
+const barObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.m-bar-fill').forEach(fill => {
+        setTimeout(() => fill.style.width = fill.dataset.width + '%', 300);
+      });
+      barObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.modern-layout').forEach(el => barObs.observe(el));
+
+// Parallax
+function runParallax() {
+  document.querySelectorAll('.parallax-banner').forEach(banner => {
+    const img = banner.querySelector('.parallax-img');
+    if (!img) return;
+    const rect = banner.getBoundingClientRect();
+    const offset = (rect.top + rect.height / 2 - window.innerHeight / 2);
+    img.style.transform = `translateY(${offset * 0.28}px)`;
+  });
+}
+window.addEventListener('scroll', runParallax, { passive: true });
+runParallax();
+</script>
+</body>
+</html>
